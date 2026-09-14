@@ -153,7 +153,7 @@ jobs:
           (cd ${{ matrix.vcpkg-root }} && git apply --ignore-space-change --ignore-whitespace --3way ${{ github.workspace }}/ffmpeg.patch)
 
       - name: Update vcpkg executable
-        run: ${{ matrix.vcpkg-root }}/bootstrap-vcpkg${{ case(startsWith(matrix.os, 'windows'), '.bat', '.sh') }}
+        run: bash "${{ matrix.vcpkg-root }}/bootstrap-vcpkg.sh"
 
       - name: Build ffmpeg
         run: |
