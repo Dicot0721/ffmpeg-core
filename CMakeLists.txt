@@ -9,7 +9,7 @@ target_include_directories(${FFMPEG_CORE_NAME} INTERFACE "${CMAKE_CURRENT_SOURCE
 # Detect OS
 if (WIN32 AND NOT MINGW)
 	set(FFMPEG_PREBUILTS_NAME "ffmpeg-windows")
-elseif (IOS AND (CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" OR ARCHITECTURE STREQUAL "x86_64"))
+elseif (IOS AND (CMAKE_OSX_SYSROOT MATCHES "iphonesimulator" OR ARCHITECTURE IN_LIST "x86_64"))
 	set(FFMPEG_PREBUILTS_NAME "ffmpeg-ios-simulator")
 elseif (IOS)
 	set(FFMPEG_PREBUILTS_NAME "ffmpeg-ios")
@@ -36,7 +36,7 @@ elseif(ARCHITECTURE STREQUAL "arm")
 	set(FFMPEG_PREBUILTS_NAME "${FFMPEG_PREBUILTS_NAME}-arm.zip")
 elseif(ARCHITECTURE STREQUAL "arm64")
 	set(FFMPEG_PREBUILTS_NAME "${FFMPEG_PREBUILTS_NAME}-arm64.zip")
-elseif(APPLE AND "x86_64" IN_LIST ARCHITECTURE AND "arm64" IN_LIST ARCHITECTURE) # macOS universal
+elseif(APPLE AND "x86_64" IN_LIST ARCHITECTURE AND "arm64" IN_LIST ARCHITECTURE) # macOS/iOS universal
 	set(FFMPEG_PREBUILTS_NAME "${FFMPEG_PREBUILTS_NAME}-universal.zip")
 else ()
 	message(FATAL_ERROR "Unsupported architecture.")
