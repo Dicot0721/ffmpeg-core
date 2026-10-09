@@ -105,6 +105,13 @@ jobs:
             arch: x64
             triplet: ios
 
+          - build: ios-simulator
+            os: macos-latest
+            arch: universal
+            triplet: ios-simulator-release
+            vcpkg-root: /Users/runner/vcpkg
+            extra-args: --overlay-triplets=./triplets
+
     steps:
       - run: git config --global core.autocrlf input
 
