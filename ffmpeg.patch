@@ -12,10 +12,10 @@ index fd794d41c8..b801972ee7 100644
      OPTIONS_x86_64="${OPTIONS_x86}"
  else
 diff --git a/ports/ffmpeg/portfile.cmake b/ports/ffmpeg/portfile.cmake
-index 03397d7af2..d36c16fcbe 100644
+index e15541ecaa..ca2836cf3a 100644
 --- a/ports/ffmpeg/portfile.cmake
 +++ b/ports/ffmpeg/portfile.cmake
-@@ -30,7 +30,22 @@ if (VCPKG_TARGET_ARCHITECTURE STREQUAL "x86" OR VCPKG_TARGET_ARCHITECTURE STREQU
+@@ -30,12 +30,25 @@ if (VCPKG_TARGET_ARCHITECTURE STREQUAL "x86" OR VCPKG_TARGET_ARCHITECTURE STREQU
      vcpkg_add_to_path("${NASM_EXE_PATH}")
  endif()
  
@@ -33,13 +33,17 @@ index 03397d7af2..d36c16fcbe 100644
 +string(APPEND OPTIONS " --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegaudio --enable-parser=mpegvideo --enable-parser=mjpeg --enable-parser=aac --enable-parser=aac_latm")
 +string(APPEND OPTIONS " --enable-protocol=file")
 +string(APPEND OPTIONS " --enable-bsf=mjpeg2jpeg")
-+if(VCPKG_TARGET_IS_MINGW)
-+    string(APPEND OPTIONS " --target-os=mingw32")
-+endif()
++string(APPEND OPTIONS " --enable-indev=dshow")
  
  if(VCPKG_TARGET_IS_MINGW)
      if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x86")
-@@ -62,7 +77,7 @@ endif()
+         string(APPEND OPTIONS " --target-os=mingw32")
+-    elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
++    elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64" OR VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+         string(APPEND OPTIONS " --target-os=mingw64")
+     endif()
+ elseif(VCPKG_TARGET_IS_LINUX)
+@@ -62,7 +75,7 @@ endif()
  vcpkg_cmake_get_vars(cmake_vars_file)
  include("${cmake_vars_file}")
  if(VCPKG_DETECTED_MSVC)
@@ -48,7 +52,7 @@ index 03397d7af2..d36c16fcbe 100644
      set(OPTIONS "--toolchain=msvc ${OPTIONS}")
      # This is required because ffmpeg depends upon optimizations to link correctly
      string(APPEND VCPKG_COMBINED_C_FLAGS_DEBUG " -O2")
-@@ -724,6 +739,11 @@ if (NOT VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
+@@ -728,6 +741,11 @@ if (NOT VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
      # We use response files here as the only known way to handle spaces in paths
      set(crsp "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/cflags.rsp")
      string(REGEX REPLACE "-arch [A-Za-z0-9_]+" "" VCPKG_COMBINED_C_FLAGS_RELEASE_SANITIZED "${VCPKG_COMBINED_C_FLAGS_RELEASE}")
